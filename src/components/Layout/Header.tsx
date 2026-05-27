@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Menu, Sun, Moon, Bell, LogOut, Settings, User, X, Check, Info, AlertTriangle, CalendarDays, FileText } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { Menu, Sun, Moon, Bell, LogOut, Settings, User, X, Check, Info, AlertTriangle, CalendarDays, FileText, DollarSign } from 'lucide-react';
+import { useNavigate } from 'react-router-dom'; // DollarSign icon add kiya
 import { useTheme } from '../../context/ThemeContext';
 import { useAuth } from '../../context/AuthContext';
 

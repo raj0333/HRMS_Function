@@ -46,7 +46,7 @@ export function PreOnboarding() {
           const Icon = s.icon;
           return (
             <div key={i} className="bg-white dark:bg-dark-800 rounded-xl p-5 border border-gray-200 dark:border-dark-700">
-              <p className="text-sm text-gray-500 dark:text-gray-400">{s.label}</p>
+              <p className="text-sm text-gray-500 dark:text-gray-400 whitespace-nowrap">{s.label}</p>
               <p className={`text-2xl font-bold mt-2 ${s.color === 'yellow' ? 'text-yellow-600' : s.color === 'blue' ? 'text-blue-600' : 'text-green-600'}`}>{s.value}</p>
             </div>
           );
@@ -71,7 +71,7 @@ export function PreOnboarding() {
                   <td className="px-6 py-4 text-gray-600 dark:text-gray-400 text-sm">{o.email}</td>
                   <td className="px-6 py-4 text-gray-600 dark:text-gray-400">{o.manager}</td>
                   <td className="px-6 py-4 text-gray-600 dark:text-gray-400">{o.joinDate}</td>
-                  <td className="px-6 py-4"><span className={`px-2.5 py-1 rounded-full text-xs font-semibold ${statusColors[o.status]}`}>{o.status.replace('_', ' ').toUpperCase()}</span></td>
+                  <td className="px-6 py-4"><span className={`px-2.5 py-1 rounded-full text-xs font-semibold whitespace-nowrap ${statusColors[o.status]}`}>{o.status.replace('_', ' ').toUpperCase()}</span></td>
                 </tr>
               ))}
             </tbody>
