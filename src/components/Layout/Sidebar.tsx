@@ -6,7 +6,7 @@ import {
   FileText, LogOut, ChevronDown, BookOpen, UserCog,
   Heart, Clock, UserPlus, List, PlusCircle, ClipboardList,
   Wallet, Receipt, CreditCard, Briefcase, UsersRound, MapPin,
-  UserCheck, Shield, Eye, Send, MessageSquare, Edit
+  UserCheck, Shield, Eye, Send, MessageSquare, Edit, X
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -27,7 +27,7 @@ interface MenuItem {
   submenu?: SubmenuItem[];
 }
 
-export function Sidebar({ isOpen }: SidebarProps) {
+export function Sidebar({ isOpen, onToggle }: SidebarProps) {
   const location = useLocation();
   const { user, logout } = useAuth();
 
@@ -110,7 +110,7 @@ export function Sidebar({ isOpen }: SidebarProps) {
 
   const [expandedMenus, setExpandedMenus] = useState<string[]>(() => {
     const active = menuItems.find(item => item.submenu?.some(s => isActive(s.path)));
-    return active ? [active.label] : ['Payroll'];
+    return active ? [active.label] : [];
   });
 
   useEffect(() => {
@@ -127,11 +127,15 @@ export function Sidebar({ isOpen }: SidebarProps) {
   return (
     <>
       {isOpen && (
-        <div className="lg:hidden fixed inset-0 bg-black/50 z-30" />
+        <div 
+          className="lg:hidden fixed inset-0 bg-black/50 z-30 backdrop-blur-sm transition-opacity duration-300" 
+          onClick={onToggle}
+        />
       )}
       <aside className={`fixed left-0 top-0 h-screen bg-white dark:bg-dark-800 border-r border-gray-200 dark:border-dark-700 shadow-lg z-40 transition-all duration-300 ease-in-out scrollbar-thin overflow-y-auto ${isOpen ? 'w-64 translate-x-0' : 'w-20 -translate-x-full lg:translate-x-0'}`}>
         {/* Logo */}
-        <div className={`sticky top-0 py-3 ${isOpen ? 'px-6' : 'px-5'} bg-gradient-to-r from-gray-50 to-gray-100 dark:from-dark-700 dark:to-dark-800 border-b border-gray-200 dark:border-dark-700 flex items-center gap-3 z-10 transition-all duration-300`}>
+        <div className={`sticky top-0 py-3 ${isOpen ? 'px-4' : 'px-5'} bg-gradient-to-r from-gray-50 to-gray-100 dark:from-dark-700 dark:to-dark-800 border-b border-gray-200 dark:border-dark-700 flex items-center justify-between z-10 transition-all duration-300`}>
+          <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0">
             <img src="/logo.png" alt="HITO HRMS" className="w-full h-full object-contain" />
           </div>
@@ -139,6 +143,17 @@ export function Sidebar({ isOpen }: SidebarProps) {
             <h1 className="font-bold text-gray-900 dark:text-white text-lg">HITO</h1>
             <p className="text-xs text-gray-500 dark:text-gray-400">HRMS Portal</p>
           </div>
+          </div>
+          
+          {/* Mobile Close Button - Only visible when open on mobile */}
+          {isOpen && (
+            <button
+              onClick={onToggle}
+              className="lg:hidden p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-dark-700 text-gray-500 transition-colors"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          )}
         </div>
 
         {/* User Info */}
