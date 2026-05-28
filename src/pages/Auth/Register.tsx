@@ -23,8 +23,11 @@ export function Register() {
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-red-900 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-red-500 to-red-700 rounded-2xl mb-4 shadow-xl">
+          {/* <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-red-500 to-red-700 rounded-2xl mb-4 shadow-xl">
             <DollarSign className="w-8 h-8 text-white" />
+          </div> */}
+           <div className="inline-block mb-4">
+            <img src="/logo.png" alt="HITO HRMS" className="w-20 h-20 object-contain" />
           </div>
           <h1 className="text-3xl font-bold text-white">Create Account</h1>
         </div>
