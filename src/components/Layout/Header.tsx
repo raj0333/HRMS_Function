@@ -6,6 +6,7 @@ import { useAuth } from '../../context/AuthContext';
 
 interface HeaderProps {
   onMenuToggle: () => void;
+  sidebarOpen: boolean;
 }
 
 interface Notification {
@@ -26,7 +27,7 @@ const initialNotifications: Notification[] = [
   { id: '5', title: 'Feedback Request', message: 'Please submit your feedback for the Q4 performance review.', type: 'info', time: '2 days ago', read: true, icon: Info },
 ];
 
-export function Header({ onMenuToggle }: HeaderProps) {
+export function Header({ onMenuToggle, sidebarOpen }: HeaderProps) {
   const navigate = useNavigate();
   const { isDark, toggleTheme } = useTheme();
   const { user, logout } = useAuth();
@@ -76,7 +77,7 @@ export function Header({ onMenuToggle }: HeaderProps) {
     <header className="h-16 bg-white dark:bg-dark-800 border-b border-gray-200 dark:border-dark-700 flex items-center justify-between px-4 sm:px-6 sticky top-0 z-20 shadow-sm">
       <button
         onClick={onMenuToggle}
-        className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-dark-700 text-gray-600 dark:text-gray-300 transition"
+        className="p-2 rounded-lg text-gray-600 dark:text-gray-300 transition hover:bg-gray-100 dark:hover:bg-dark-700"
       >
         <Menu className="w-5 h-5" />
       </button>
@@ -178,10 +179,21 @@ export function Header({ onMenuToggle }: HeaderProps) {
               <div className="fixed inset-0 z-30" onClick={() => setProfileOpen(false)} />
               <div className="absolute right-0 mt-2 w-64 bg-white dark:bg-dark-800 rounded-xl shadow-2xl border border-gray-200 dark:border-dark-700 py-2 z-40">
                 {/* User Info */}
-                <div className="px-4 py-3 border-b border-gray-100 dark:border-dark-700">
-                  <p className="font-semibold text-gray-900 dark:text-white">{user?.name}</p>
-                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{user?.email}</p>
-                  <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5 capitalize">{user?.role?.replace('_', ' ')}</p>
+                <div className="px-4 py-3 border-b border-gray-100 dark:border-dark-700 flex items-center gap-3">
+                  <div className="flex-shrink-0">
+                    {user?.image ? (
+                      <img src={user.image} alt="Profile" className="w-12 h-12 rounded-full object-cover border-2 border-gray-100 dark:border-dark-700 shadow-sm" />
+                    ) : (
+                      <div className="w-12 h-12 rounded-full bg-gradient-to-br from-red-400 to-red-600 flex items-center justify-center text-white font-bold text-lg shadow-sm">
+                        {user?.name?.charAt(0).toUpperCase() || 'U'}
+                      </div>
+                    )}
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className="font-semibold text-gray-900 dark:text-white text-sm truncate">{user?.name}</p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{user?.email}</p>
+                    <p className="text-[10px] inline-block mt-1 px-2 py-0.5 font-medium bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 rounded-full capitalize">{user?.role?.replace('_', ' ')}</p>
+                  </div>
                 </div>
 
                 {/* Menu Items */}

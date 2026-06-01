@@ -106,12 +106,27 @@ export function Sidebar({ isOpen, onToggle }: SidebarProps) {
     },
   ];
 
+  // Role-based menu filtering: Super Admin ke liye employee side access remove karna
+  const filteredMenuItems = menuItems.map(item => ({ ...item })).filter(item => {
+    if (user?.role === 'super_admin') {
+      // 'Personal Info' purely employee side hai, isse hide kar do
+      if (item.label === 'Personal Info') return false;
+
+      // Submenus mein se employee actions ko remove karo
+      if (item.submenu) {
+        const employeeOnlyActions = ['Apply Leave', 'Leave Balance', 'Mark Attendance', 'Time Tracker'];
+        item.submenu = item.submenu.filter(sub => !employeeOnlyActions.includes(sub.label));
+        
+        // Agar koi item bina submenu ke bach gaya hai aur uska path '#' hai, toh use hide kar do
+        if (item.submenu.length === 0 && item.path === '#') return false;
+      }
+    }
+    return true;
+  });
+
   const isActive = (path: string) => location.pathname === path.split('?')[0];
 
-  const [expandedMenus, setExpandedMenus] = useState<string[]>(() => {
-    const active = menuItems.find(item => item.submenu?.some(s => isActive(s.path)));
-    return active ? [active.label] : [];
-  });
+  const [expandedMenus, setExpandedMenus] = useState<string[]>([]);
 
   useEffect(() => {
     const active = menuItems.find(item => item.submenu?.some(s => isActive(s.path)));
@@ -132,9 +147,11 @@ export function Sidebar({ isOpen, onToggle }: SidebarProps) {
           onClick={onToggle}
         />
       )}
-      <aside className={`fixed left-0 top-0 h-screen bg-white dark:bg-dark-800 border-r border-gray-200 dark:border-dark-700 shadow-lg z-40 transition-all duration-300 ease-in-out scrollbar-thin overflow-y-auto ${isOpen ? 'w-64 translate-x-0' : 'w-20 -translate-x-full lg:translate-x-0'}`}>
+      <aside className={`fixed left-0 top-0 h-screen bg-white dark:bg-dark-800 border-r border-gray-200 dark:border-dark-700 shadow-lg z-40 transition-all duration-300 ease-in-out scrollbar-thin overflow-y-auto overflow-x-hidden ${
+        isOpen ? 'w-64 translate-x-0' : 'w-0 -translate-x-full lg:w-20 lg:translate-x-0'
+      }`}>
         {/* Logo */}
-        <div className={`sticky top-0 py-3 ${isOpen ? 'px-4' : 'px-5'} bg-gradient-to-r from-gray-50 to-gray-100 dark:from-dark-700 dark:to-dark-800 border-b border-gray-200 dark:border-dark-700 flex items-center justify-between z-10 transition-all duration-300`}>
+        <div className={`sticky top-0 py-[10px] ${isOpen ? 'px-4' : 'px-5'} bg-gradient-to-r from-gray-50 to-gray-100 dark:from-dark-700 dark:to-dark-800 border-b border-gray-200 dark:border-dark-700 flex items-center justify-between z-10 transition-all duration-300`}>
           <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0">
             <img src="/logo.png" alt="HITO HRMS" className="w-full h-full object-contain" />
@@ -171,7 +188,7 @@ export function Sidebar({ isOpen, onToggle }: SidebarProps) {
 
         {/* Nav */}
         <nav className="flex-1 px-3 py-4 space-y-1">
-          {menuItems.map((item, idx) => {
+          {filteredMenuItems.map((item, idx) => {
             const Icon = item.icon;
             const isExpanded = expandedMenus.includes(item.label) && isOpen;
             const hasSubmenu = !!item.submenu?.length;
@@ -181,8 +198,8 @@ export function Sidebar({ isOpen, onToggle }: SidebarProps) {
                 {hasSubmenu ? (
                   <>
                     <button
-                      onClick={() => toggleMenu(item.label)}
-                      className={`w-full flex items-center ${isOpen ? 'justify-between px-3' : 'justify-center px-0'} py-2.5 rounded-lg transition-all duration-200 group ${isExpanded ? 'bg-red-50 dark:bg-red-900/10 text-red-700 dark:text-red-400' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-dark-700'}`}
+                      onClick={() => isOpen && toggleMenu(item.label)}
+                      className={`w-full flex items-center ${isOpen ? 'justify-between px-3 cursor-pointer' : 'justify-center px-0 cursor-default pointer-events-none'} py-2.5 rounded-lg transition-all duration-200 group ${isExpanded ? 'bg-red-50 dark:bg-red-900/10 text-red-700 dark:text-red-400' : `text-gray-700 dark:text-gray-300 ${isOpen ? 'hover:bg-gray-100 dark:hover:bg-dark-700' : ''}`}`}
                     >
                       <div className={`flex items-center ${isOpen ? 'gap-3' : 'gap-0'}`}>
                         <Icon className={`w-5 h-5 ${isExpanded ? 'text-red-600 dark:text-red-400' : 'text-gray-500 dark:text-gray-400 group-hover:text-red-500'}`} />
@@ -211,7 +228,7 @@ export function Sidebar({ isOpen, onToggle }: SidebarProps) {
                 ) : (
                   <Link
                     to={item.path}
-                    className={`flex items-center ${isOpen ? 'gap-3 px-3' : 'justify-center px-0'} py-2.5 rounded-lg font-medium text-sm transition-all duration-200 ${isActive(item.path) ? 'bg-gradient-to-r from-red-500 to-red-600 text-white shadow-lg shadow-red-500/25' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-dark-700'}`}
+                    className={`flex items-center ${isOpen ? 'gap-3 px-3 cursor-pointer' : 'justify-center px-0 cursor-default pointer-events-none'} py-2.5 rounded-lg font-medium text-sm transition-all duration-200 ${isActive(item.path) ? 'bg-gradient-to-r from-red-500 to-red-600 text-white shadow-lg shadow-red-500/25' : `text-gray-700 dark:text-gray-300 ${isOpen ? 'hover:bg-gray-100 dark:hover:bg-dark-700' : ''}`}`}
                   >
                     <Icon className={`w-5 h-5 ${isActive(item.path) ? 'text-white' : 'text-gray-500 dark:text-gray-400'}`} />
                     <span className={`transition-all duration-300 whitespace-nowrap overflow-hidden ${isOpen ? 'opacity-100 w-auto' : 'opacity-0 w-0'}`}>{item.label}</span>

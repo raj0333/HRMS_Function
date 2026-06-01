@@ -259,7 +259,7 @@ export function WorkingHours() {
                   <td className="px-6 py-4 text-gray-600 dark:text-gray-400">{t.in}</td>
                   <td className="px-6 py-4 text-gray-600 dark:text-gray-400">{t.out}</td>
                   <td className="px-6 py-4 font-semibold text-gray-900 dark:text-white">{t.total}</td>
-                  <td className="px-6 py-4"><span className={`px-2.5 py-1 rounded-full text-xs font-semibold ${t.type==='Overtime'?'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400':'bg-gray-100 text-gray-600 dark:bg-dark-600 dark:text-gray-300'}`}>{t.type}</span></td>
+                  <td className="px-6 py-4"><span className={`px-2.5 py-1 rounded-full text-xs font-semibold ${t.type==='Overtime'?'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400':'bg-gray-100 text-gray-600 dark:bg-dark-600 dark:text-gray-600'}`}>{t.type}</span></td>
                 </tr>
               ))}
               {entries.length === 0 && (

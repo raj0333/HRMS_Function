@@ -9,9 +9,9 @@ const initialLeaves = [
 ];
 
 const statusColors: Record<string, string> = {
-  approved: 'bg-green-100 text-green-700',
-  rejected: 'bg-red-100 text-red-700',
-  pending: 'bg-yellow-100 text-yellow-700',
+  approved: 'bg-green-100 text-green-700 dark:bg-green-900/20 dark:text-green-400',
+  rejected: 'bg-red-100 text-red-700 dark:bg-red-900/20 dark:text-red-400',
+  pending: 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/20 dark:text-yellow-400',
 };
 
 export function Leaves() {
@@ -62,7 +62,7 @@ export function Leaves() {
         </div>
       </div>
       {showModal && (
-        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-0 !m-0">
           <div className="bg-white dark:bg-dark-800 rounded-2xl shadow-2xl w-full max-w-md">
             <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-dark-700">
               <h2 className="text-xl font-bold text-gray-900 dark:text-white">Apply for Leave</h2>
@@ -87,11 +87,11 @@ export function Leaves() {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">From <span className="text-red-500">*</span></label>
-                  <input type="date" value={form.from} onChange={e => setForm(f => ({ ...f, from: e.target.value }))} className="w-full px-4 py-2.5 border border-gray-300 dark:border-dark-600 rounded-lg bg-white dark:bg-dark-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-red-500" required />
+                  <input type="date" value={form.from} onChange={e => setForm(f => ({ ...f, from: e.target.value }))} className="w-full px-4 py-2.5 border border-gray-300 dark:border-dark-600 rounded-lg bg-white dark:bg-dark-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-red-500 dark:[color-scheme:dark] [&::-webkit-calendar-picker-indicator]:dark:white" required />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">To <span className="text-red-500">*</span></label>
-                  <input type="date" value={form.to} onChange={e => setForm(f => ({ ...f, to: e.target.value }))} className="w-full px-4 py-2.5 border border-gray-300 dark:border-dark-600 rounded-lg bg-white dark:bg-dark-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-red-500" required />
+                  <input type="date" value={form.to} onChange={e => setForm(f => ({ ...f, to: e.target.value }))} className="w-full px-4 py-2.5 border border-gray-300 dark:border-dark-600 rounded-lg bg-white dark:bg-dark-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-red-500 dark:[color-scheme:dark] [&::-webkit-calendar-picker-indicator]:dark:white" required />
                 </div>
               </div>
 

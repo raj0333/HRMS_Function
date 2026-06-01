@@ -4,7 +4,7 @@ import { User } from '../types';
 interface AuthContextType {
   user: User | null;
   isAuthenticated: boolean;
-  login: (email: string, password: string) => Promise<boolean>;
+  login: (email: string, password: string, portal?: 'admin' | 'employee') => Promise<boolean>;
   logout: () => void;
   signup: (email: string, password: string, name: string) => Promise<boolean>;
   updateProfile: (data: { name?: string; email?: string; role?: User['role']; image?: string }) => void;
@@ -31,9 +31,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return stored ? JSON.parse(stored) : null;
   });
 
-  const login = async (email: string, password: string): Promise<boolean> => {
+  const login = async (email: string, password: string, portal: 'admin' | 'employee' = 'admin'): Promise<boolean> => {
     const found = mockUsers.find(u => u.email === email && u.password === password);
     if (found) {
+      // super admin ko login karne ka access Admin and HR side se rakho
+      // employee side ka login access super admin se remove kar do
+      if (found.role === 'super_admin' && portal === 'employee') {
+        return false;
+      }
+
+      if (found.role === 'employee' && portal === 'admin') {
+        return false;
+      }
+
       const u: User = { id: found.id, email: found.email, name: found.name, role: found.role };
       setUser(u);
       localStorage.setItem('hrms_user', JSON.stringify(u));
